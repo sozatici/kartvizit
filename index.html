@@ -3,12 +3,12 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="UTF-8">
-<title>Deneme Soner</title>
+<title>Aras Kaplan</title>
 
 <style>
 body {
     margin:0;
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     background:#111;
     color:white;
     display:flex;
@@ -18,31 +18,67 @@ body {
     text-align:center;
 }
 
-.loader {
-    font-size:18px;
-    opacity:0.7;
+.box {
+    padding:20px;
+}
+
+.btn {
+    display:inline-block;
+    margin-top:20px;
+    background:#00c853;
+    color:white;
+    padding:15px 25px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:bold;
 }
 </style>
 </head>
 
 <body>
 
-<div class="loader">
-Kişi kartı hazırlanıyor...
+<div class="box">
+    <div id="text">Kişi kartı hazırlanıyor...</div>
+
+    <!-- fallback buton -->
+    <a id="manualBtn" class="btn" href="aras.vcf" download style="display:none;">
+        Kişilere Kaydet
+    </a>
 </div>
 
-<!-- GİZLİ LINK -->
+<!-- gizli tetikleme -->
 <a id="vcfLink" href="aras.vcf" download></a>
 
 <script>
+
+// cihaz tespiti
+function isIOS() {
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+// otomatik tetikleme
 window.onload = function() {
 
-    // 300ms sonra otomatik tıklama
+    if (isIOS()) {
+        // iOS → redirect daha stabil
+        setTimeout(function() {
+            window.location.href = "aras.vcf";
+        }, 300);
+    } else {
+        // Android → click daha iyi çalışır
+        setTimeout(function() {
+            document.getElementById("vcfLink").click();
+        }, 300);
+    }
+
+    // fallback (her ihtimale karşı)
     setTimeout(function() {
-        document.getElementById("vcfLink").click();
-    }, 300);
+        document.getElementById("text").innerText = "Kaydetmek için butona dokunun";
+        document.getElementById("manualBtn").style.display = "inline-block";
+    }, 1500);
 
 };
+
 </script>
 
 </body>
